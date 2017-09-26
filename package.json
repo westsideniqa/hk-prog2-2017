@@ -1,0 +1,14 @@
+{
+  "name": "hk-prog2-2017",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jaan Koppe",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.5"
+  }
+}
