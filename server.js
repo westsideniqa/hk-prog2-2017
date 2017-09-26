@@ -1,4 +1,7 @@
 const express = require('express'); // Lisame express mooduli, selle abil loome Node.js baasil veebiserveri
+const indexRoutes = require('./controllers/index');
+const infoRoutes = require('./controllers/info');
+
 /**
  * express rakenduse konstant, mille kaudu saame ligi veebiserverile
 */
@@ -29,19 +32,8 @@ app.use(express.static('public'));
 */
 const PORT = 3000;  
 
-/**
- * 
- * Rakendus kuulab GET päringut asukohta "/",
- * kus esimene parameeter on relatiivne asukoht serveri mõistes
- * ehk kui veebiserver on localhost:3000, siis app.get('/asukoht') oleks localhost:3000/asukoht.
-*/
-app.get('/', (req, res) => {
-    /**
-     * Vaate "renderdamine", ehk parsitakse EJS süntaks HTML-iks kokku
-     * ning saadetakse kliendile, kes selle päringu teostas (ehk kes sellele URL-ile läks)
-    */
-    res.render('pages/index');
-});
+app.use('/server-info', infoRoutes);
+app.use('/', indexRoutes);
 
 app.listen(PORT, () => {
     /**
