@@ -15,6 +15,17 @@
                 <hr>
                 <a href="/post/<%= post._id %>/edit" class="btn btn-primary">Edit</a>
             </div>
+
+            <% if(locals.allPosts) { %>
+                <div class="sidebar">
+                    <ul>
+                    <% allPosts.forEach(function(post) { %>
+                        <li><a href="/post/<%= post._id %>"><%= post.title %></a></li>
+                    <% }); %>
+                    </ul>
+                </div>
+            <% } %>
+            
         </main>
         <footer class="bg-light">
             <% include ../partials/footer %>

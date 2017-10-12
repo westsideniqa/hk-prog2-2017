@@ -70,4 +70,63 @@ router.get('/post/:id', (req, res) => {
     });
 });
 
+// Üksiku postituse vaade + kõik teised
+router.get('/post/:id/sidebar', (req, res) => {
+    let postId = req.params.id;
+    Post.find({}, (err, posts) => {
+        if(err) {
+            console.log(err);
+        }else{
+            console.log(posts);
+            let currentPost = null;
+            posts.forEach(function(post) {
+                if(post._id == postId) {
+                    currentPost = post;
+                    res.locals.post = currentPost;
+                }
+            });
+
+            res.locals.allPosts = posts;
+            
+            console.log(posts);
+            res.render('pages/single-post');
+            //res.json(posts);
+        }
+    });
+});
+
+// Postituse muutmise vaade
+router.get('/post/:id/edit', (req, res) => {
+    let postId = req.params.id;
+    Post.findOne({_id: postId}).exec((err, post) => {
+        if(err) {
+            console.log(err);
+            res.redirect('/posts');
+        }else{
+            res.locals.post = post;
+            res.render('pages/edit-post');
+        }
+    });
+});
+
+router.post('/post/:id/edit', (req, res) => {
+    let post = {
+        title: req.body.title,
+        author: req.body.author,
+        content: req.body.content
+    };
+
+    let query = {_id: req.params.id};
+
+    Post.update(query, post, (err) => {
+        if(err) {
+            console.log(err);
+            res.redirect('/post/' + req.params.id + '/edit');
+        }else{
+            res.redirect('/post/' + req.params.id);
+        }
+    });
+
+});
+
 module.exports = router;
