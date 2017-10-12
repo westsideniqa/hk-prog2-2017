@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const Post = require('../models/post');
 /**
  * 
  * Rakendus kuulab GET päringut asukohta "/",
@@ -13,6 +14,19 @@ router.get('/', (req, res) => {
      * ning saadetakse kliendile, kes selle päringu teostas (ehk kes sellele URL-ile läks)
     */
     res.render('pages/index');
+});
+
+router.get('/posts', (req, res) => {
+    Post.find({}, (err, posts) => {
+        if(err) {
+            console.log(err);
+        }else{
+            res.locals.posts = posts;
+            console.log(posts);
+            res.render('pages/posts');
+            //res.json(posts);
+        }
+    });
 });
 
 module.exports = router;
