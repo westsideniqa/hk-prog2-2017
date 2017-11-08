@@ -8,7 +8,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 /**
- * 
+ *
  * Rakendus kuulab GET päringut asukohta "/",
  * kus esimene parameeter on relatiivne asukoht serveri mõistes
  * ehk kui veebiserver on localhost:3000, siis app.get('/asukoht') oleks localhost:3000/asukoht.
@@ -87,7 +87,7 @@ router.get('/post/:id/sidebar', (req, res) => {
             });
 
             res.locals.allPosts = posts;
-            
+
             console.log(posts);
             res.render('pages/single-post');
             //res.json(posts);
@@ -118,15 +118,26 @@ router.post('/post/:id/edit', (req, res) => {
 
     let query = {_id: req.params.id};
 
-    Post.update(query, post, (err) => {
-        if(err) {
-            console.log(err);
-            res.redirect('/post/' + req.params.id + '/edit');
-        }else{
-            res.redirect('/post/' + req.params.id);
-        }
-    });
+    if (req.body.action == 'submit') {
 
+      Post.update(query, post, (err) => {
+          if(err) {
+              console.log(err);
+              res.redirect('/post/' + req.params.id + '/edit');
+          }else{
+              res.redirect('/post/' + req.params.id);
+          }
+      });
+      } else {
+       Post.remove(query, (err) => {
+           if(err) {
+               console.log(err);
+               res.redirect('/post/' + req.params.id + '/edit');
+           } else {
+               res.redirect('/posts');
+           }
+       })
+    }
 });
 
 module.exports = router;
